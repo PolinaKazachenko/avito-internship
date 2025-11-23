@@ -1,0 +1,41 @@
+run:
+  concurrency: 8
+  timeout: 10m
+  issues-exit-code: 1
+  tests: true
+
+issues:
+  exclude-dirs:
+    - bin
+    - vendor
+    - var
+    - tmp
+    - .cache
+
+output:
+  formats: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  govet:
+    shadow: true # Проверяет, перекрывает ли переменная другую переменную в области видимости
+  goconst:
+    min-len:         2 # Строки длиной 2 и больше символов рассматриваются как потенциальные константы
+    min-occurrences: 2 # Проверяет, встречается ли строка 2 и более раз -> нужно вынести в константу
+  revive:
+    rules:
+      - name: var-naming
+        disabled: true
+
+linters:
+  disable-all: true
+  enable:
+    - gofmt       # Форматирование кода (пробелы, отступы, переносы)
+    - govet       # Статический анализ Go (было vet — устаревшее имя)
+    - errcheck    # Проверяет, что ошибки не игнорируются
+    - staticcheck # Продвинутый анализ: утечки, неправильные вызовы, dead code
+    - unused      # Находит неиспользуемые функции, переменные, импорты — заменяет structcheck и varcheck
+    - goconst     # Повторяющиеся строки/числа → вынести в константы
+    - revive      # Стиль кода по Go рекомендациям (имена, комментарии)
+    - gci
